@@ -33,7 +33,7 @@ parser.add_argument('--start-epoch', default=0, type=int, metavar='N', help='man
 def main():
     global arg
     arg = parser.parse_args()
-    print arg
+    print(arg)
 
     #Prepare DataLoader
     data_loader = dataloader.spatial_dataloader(
@@ -85,16 +85,16 @@ class Spatial_CNN():
     def resume_and_evaluate(self):
         if self.resume:
             if os.path.isfile(self.resume):
-                print("==> loading checkpoint '{}'".format(self.resume))
+                print(("==> loading checkpoint '{}'".format(self.resume)))
                 checkpoint = torch.load(self.resume)
                 self.start_epoch = checkpoint['epoch']
                 self.best_prec1 = checkpoint['best_prec1']
                 self.model.load_state_dict(checkpoint['state_dict'])
                 self.optimizer.load_state_dict(checkpoint['optimizer'])
-                print("==> loaded checkpoint '{}' (epoch {}) (best_prec1 {})"
-                  .format(self.resume, checkpoint['epoch'], self.best_prec1))
+                print(("==> loaded checkpoint '{}' (epoch {}) (best_prec1 {})"
+                  .format(self.resume, checkpoint['epoch'], self.best_prec1)))
             else:
-                print("==> no checkpoint found at '{}'".format(self.resume))
+                print(("==> no checkpoint found at '{}'".format(self.resume)))
         if self.evaluate:
             self.epoch = 0
             prec1, val_loss = self.validate_1epoch()
@@ -126,7 +126,7 @@ class Spatial_CNN():
             },is_best,'record/spatial/checkpoint.pth.tar','record/spatial/model_best.pth.tar')
 
     def train_1epoch(self):
-        print('==> Epoch:[{0}/{1}][training stage]'.format(self.epoch, self.nb_epochs))
+        print(('==> Epoch:[{0}/{1}][training stage]'.format(self.epoch, self.nb_epochs)))
         batch_time = AverageMeter()
         data_time = AverageMeter()
         losses = AverageMeter()
@@ -182,7 +182,7 @@ class Spatial_CNN():
         record_info(info, 'record/spatial/rgb_train.csv','train')
 
     def validate_1epoch(self):
-        print('==> Epoch:[{0}/{1}][validation stage]'.format(self.epoch, self.nb_epochs))
+        print(('==> Epoch:[{0}/{1}][validation stage]'.format(self.epoch, self.nb_epochs)))
         batch_time = AverageMeter()
         losses = AverageMeter()
         top1 = AverageMeter()
@@ -208,7 +208,7 @@ class Spatial_CNN():
             nb_data = preds.shape[0]
             for j in range(nb_data):
                 videoName = keys[j].split('/',1)[0]
-                if videoName not in self.dic_video_level_preds.keys():
+                if videoName not in list(self.dic_video_level_preds.keys()):
                     self.dic_video_level_preds[videoName] = preds[j,:]
                 else:
                     self.dic_video_level_preds[videoName] += preds[j,:]
@@ -253,12 +253,6 @@ class Spatial_CNN():
             
         #print(' * Video level Prec@1 {top1:.3f}, Video level Prec@5 {top5:.3f}'.format(top1=top1, top5=top5))
         return top1,top5,loss.data.cpu().numpy()
-
-
-
-
-
-
 
 if __name__=='__main__':
     main()
