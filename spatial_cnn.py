@@ -15,8 +15,7 @@ import torch
 import torch.backends.cudnn as cudnn
 from torch.autograd import Variable
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-
-import dataloader
+import dataloader 
 from utils import *
 from network import *
 
@@ -147,7 +146,7 @@ class Spatial_CNN():
             target_var = Variable(label).cuda()
 
             # compute output
-            output = Variable(torch.zeros(len(data_dict['img1']),101).float()).cuda()
+            output = Variable(torch.zeros(len(data_dict['img1']),2).float()).cuda()
             for i in range(len(data_dict)):
                 key = 'img'+str(i)
                 data = data_dict[key]
